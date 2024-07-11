@@ -94,6 +94,15 @@ Image ditherImage(Image image,
       final r1 = pc[0].toInt();
       final g1 = pc[1].toInt();
       final b1 = pc[2].toInt();
+      final a1 = pc[3].toInt();
+
+      //g787
+      //透明颜色直接用255这个最后的透明颜色
+      //因为我们gif时不用dither，所以走顶上的流程
+      if (a1 < 50) {
+        indexedImage.setPixelIndex(x, y, 255);
+        continue;
+      }
 
       // Get converted color
       final idx = quantizer.getColorIndexRgb(r1, g1, b1);

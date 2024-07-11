@@ -65,6 +65,11 @@ class NeuralQuantizer extends Quantizer {
     final r = c.r.toInt();
     final g = c.g.toInt();
     final b = c.b.toInt();
+    final a = c.a.toInt();
+    //g787问题
+    if (a < 30) {
+      return 255;
+    }
     return _inxSearch(b, g, r);
   }
 
@@ -93,7 +98,8 @@ class NeuralQuantizer extends Quantizer {
     initRadius = netSize ~/ 8; // for 256 cols, radius starts at 32
     initBiasRadius = initRadius * radiusBias;
     _palette = PaletteUint32(256, 4);
-    palette = PaletteUint8(256, 3);
+    // palette = PaletteUint8(256, 3);
+    palette = PaletteUint8(256, 4); //G787 原来最后结果是3通道，改成4通道，增加alpha通道
     specials = 3; // number of reserved colours used
     bgColor = specials - 1;
     _radiusPower = Int32List(netSize >> 3);
@@ -131,6 +137,10 @@ class NeuralQuantizer extends Quantizer {
     for (var i = 0; i < netSize; ++i) {
       palette.setRgb(i, _palette.get(i, 2).abs(), _palette.get(i, 1).abs(),
           _palette.get(i, 0).abs());
+
+      //G787 最后一个颜色，始终全部透明！
+      // ignore: cascade_invocations
+      palette.setAlpha(i, i == 255 ? 0 : 255);
     }
   }
 

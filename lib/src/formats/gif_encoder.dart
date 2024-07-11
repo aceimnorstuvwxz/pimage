@@ -71,7 +71,12 @@ class GifEncoder extends Encoder {
     _encodedFrames++;
 
     if (!image.hasPalette) {
+      //G787
+      //对于无palette的png图片，到这里会
+      //此处生成palette，原来有gif无法透明的问题，是因为
+      //生成的palette没有透明颜色，我们通过魔改来加入透明色
       if (quantizerType == QuantizerType.neural) {
+        //总是会走这个neural方法
         _lastColorMap = NeuralQuantizer(image,
             numberOfColors: numColors, samplingFactor: samplingFactor);
       } else if (quantizerType == QuantizerType.octree) {
