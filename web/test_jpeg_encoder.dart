@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:html';
 
-import 'package:image/image.dart';
+import 'package:pimage/image.dart';
 
 void main() {
   final theImg = document.getElementById('testimage') as ImageElement;

@@ -3,7 +3,7 @@
 ## Load an image, resize it, and save it as a thumbnail jpeg
 
 ```dart
-import 'package:image/image.dart' as img;
+import 'package:pimage/image.dart' as img;
 void main() {
   // Read a jpeg image from file.
   final image = img.decodeJpg(File('test.jpg').readAsBytesSync());
@@ -17,7 +17,7 @@ void main() {
 ## Load and process an image in a separate isolate thread
 
 ```dart
-import 'package:image/image.dart' as img;
+import 'package:pimage/image.dart' as img;
 void main() async {
   // The Command API lets you define sequences of image commands to execute, and supports executing
   // in a separate Isolate thread.
@@ -39,7 +39,7 @@ void main() async {
 
 ```dart
 import 'dart:html';
-import 'package:image/image.dart' as img;
+import 'package:pimage/image.dart' as img;
 
 // Read a Canvas into an Image.
 // The returned Image will be accessing the data of the canvas directly, so any changes you
@@ -55,7 +55,7 @@ img.Image getImageFromCanvas(CanvasElement canvas) {
 
 ```dart
 import 'dart:html';
-import 'package:image/image.dart' as img;
+import 'package:pimage/image.dart' as img;
 
 // Draw an Image onto a Canvas by getting writing the bytes to ImageData that can be
 // copied to the Canvas.
@@ -70,7 +70,7 @@ void drawImageOntoCanvas(Html.CanvasElement canvas, img.Image image) {
 ## Create an image, draw some text, save it as a PNG
 
 ```dart
-import 'package:image/image.dart' as img;
+import 'package:pimage/image.dart' as img;
 void main() async {
   await (img.Command()
   // Create an image, with the default uint8 format and default number of channels, 3. 
@@ -93,7 +93,7 @@ void main() async {
 ## Map the grayscale of an image to its alpha channel, converting it to RGBA if necessary
 
 ```dart
-import 'package:image/image.dart' as img;
+import 'package:pimage/image.dart' as img;
 img.Image grayscaleAlpha(img.Image image) {
   // Convert the image to RGBA (if it doesn't already have an alpha channel.
   final rgba = image.convert(numChannels: 4);
@@ -105,7 +105,7 @@ img.Image grayscaleAlpha(img.Image image) {
 ## Save the frames from a GIF animation to PNG files
 
 ```dart
-import 'package:image/image.dart' as img;
+import 'package:pimage/image.dart' as img;
 void main() async {
   final anim = await img.decodeGifFile('animated.gif');
   // The frames property stores the frames of the animation. If the image didn't have any animation,
@@ -120,7 +120,7 @@ void main() async {
 ## Load a directory of images, auto-trim the first image, and apply the trim to all subsequent images.
 
 ```dart
-import 'package:image/image.dart' as img;
+import 'package:pimage/image.dart' as img;
 void main(List<String> argv) {
   final path = argv[0];
   final dir = Directory(path);
@@ -150,7 +150,7 @@ void main(List<String> argv) {
 ## Split images into pieces
 
 ```dart
-import 'package:image/image.dart' as img;
+import 'package:pimage/image.dart' as img;
 
 List<img.Image> splitImage(img.Image inputImage, int horizontalPieceCount, int verticalPieceCount) {
   img.Image image = inputImage;

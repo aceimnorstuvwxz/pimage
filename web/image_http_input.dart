@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:html';
 import 'dart:typed_data';
 
-import 'package:image/image.dart';
+import 'package:pimage/image.dart';
 
 late InputElement fileInput;
 

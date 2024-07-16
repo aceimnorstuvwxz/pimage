@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:html';
 import 'dart:typed_data';
 
-import 'package:image/image.dart' as img;
+import 'package:pimage/image.dart' as img;
 
 /// Convert all .exr IMG elements on the page to PNG so that they can be viewed
 /// by browsers.

@@ -1,4 +1,4 @@
-name: image
+name: pimage
 version: 4.2.0
 description: >-
   Dart Image Library provides server and web apps the ability to load, manipulate,

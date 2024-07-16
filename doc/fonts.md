@@ -11,7 +11,7 @@ To create a bitmap font to use with the Dart Image Library:
 You can import the zip with:
 
 ```dart
-import 'package:image/image.dart' as img;
+import 'package:pimage/image.dart' as img;
 
 void main() async {
   final fontZipFile = await File('font.zip').readAsBytes();

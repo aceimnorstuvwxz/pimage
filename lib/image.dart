@@ -1,6 +1,6 @@
 /// The Dart Image Library provides the ability to load, save, and
 /// manipulate images in a variety of image file formats.
-library image;
+library pimage;
 
 export 'src/color/channel.dart';
 export 'src/color/channel_iterator.dart';

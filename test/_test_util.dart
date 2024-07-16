@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:archive/archive.dart';
-import 'package:image/image.dart';
+import 'package:pimage/image.dart';
 import 'package:test/test.dart';
 
 final testOutputPath = '${Directory.systemTemp.createTempSync().path}/out';

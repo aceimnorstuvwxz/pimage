@@ -1,4 +1,4 @@
-import 'package:image/image.dart' as img;
+import 'package:pimage/image.dart' as img;
 
 void main() async {
   await (img.Command()

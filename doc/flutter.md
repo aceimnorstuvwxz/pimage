@@ -8,7 +8,7 @@ NOTE: I will be releasing an extension library that will simplify working with t
 ## Convert a Dart Image Library Image to a Flutter UI Image
 ```dart
 import 'dart:ui' as ui;
-import 'package:image/image.dart' as img;
+import 'package:pimage/image.dart' as img;
 
 Future<ui.Image> convertImageToFlutterUi(img.Image image) async {
   if (image.format != img.Format.uint8 || image.numChannels != 4) {
@@ -44,7 +44,7 @@ Future<ui.Image> convertImageToFlutterUi(img.Image image) async {
 ## Convert a Flutter UI Image to the Dart Image Library
 ```dart
 import 'dart:ui' as ui;
-import 'package:image/image.dart' as img;
+import 'package:pimage/image.dart' as img;
 
 Future<img.Image> convertFlutterUiToImage(ui.Image uiImage) async {
   final uiBytes = await uiImage.toByteData();
@@ -60,7 +60,7 @@ Future<img.Image> convertFlutterUiToImage(ui.Image uiImage) async {
 ## Convert a Flutter Asset to the Dart Image Library
 ```dart
 import 'dart:ui' as ui;
-import 'package:image/image.dart' as img;
+import 'package:pimage/image.dart' as img;
 
 Future<img.Image?> decodeAsset(String path) async {
   final data = await rootBundle.load(path);

@@ -44,7 +44,7 @@ NOTE: 4.0 is a major revision from the previous version of the library.
 Create an image, set pixel values, save it to a PNG.
 ```dart
 import 'dart:io';
-import 'package:image/image.dart' as img;
+import 'package:pimage/image.dart' as img;
 void main() async {
   // Create a 256x256 8-bit (default) rgb (default) image.
   final image = img.Image(width: 256, height: 256);
@@ -64,7 +64,7 @@ void main() async {
 
 To asynchronously load an image file, resize it, and save it as a thumbnail: 
 ```dart
-import 'package:image/image.dart' as img;
+import 'package:pimage/image.dart' as img;
 
 void main(List<String> args) async {
   final path = args.isNotEmpty ? args[0] : 'test.png';
