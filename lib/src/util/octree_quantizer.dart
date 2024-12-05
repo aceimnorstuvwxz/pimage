@@ -4,6 +4,14 @@ import '../image/image.dart';
 import '../image/palette_uint8.dart';
 import 'quantizer.dart';
 
+class _RGB {
+  final int r;
+  final int g;
+  final int b;
+
+  _RGB({required this.r, required this.g, required this.b});
+}
+
 // Color quantization using octree,
 // from https://rosettacode.org/wiki/Color_quantization/C
 class OctreeQuantizer extends Quantizer {
@@ -11,18 +19,21 @@ class OctreeQuantizer extends Quantizer {
   late PaletteUint8 palette;
   final _OctreeNode _root;
   late int transIndex;
+  final List<_RGB> rgbPaletteColors = [];
 
   OctreeQuantizer(Image image, {int numberOfColors = 256})
       : _root = _OctreeNode(0, 0, null) {
     final heap = _HeapNode();
     for (final p in image) {
-      final r = p.r as int;
-      final g = p.g as int;
-      final b = p.b as int;
-      _heapAdd(heap, _nodeInsert(_root, r, g, b));
+      if (p.a > 0) {
+        final r = p.r as int;
+        final g = p.g as int;
+        final b = p.b as int;
+        _heapAdd(heap, _nodeInsert(_root, r, g, b));
+      }
     }
 
-    final nc = numberOfColors + 1;
+    final nc = numberOfColors; //原来的+1去掉，因为我们最后一个要用来放透明颜色
     while (heap.n > nc) {
       _heapAdd(heap, _nodeFold(_popHeap(heap)!)!);
     }
@@ -44,14 +55,17 @@ class OctreeQuantizer extends Quantizer {
         PaletteUint8(nodes.length + 1, 4); //g787 原来最后结果是3通道，改成4通道，增加alpha通道
     //+1是为了给最后一个透明颜色留位置
     final l = nodes.length;
-    for (var i = 0; i < l; ++i) {
+    for (var i = 0; i < l; i++) {
       final n = nodes[i]..paletteIndex = i;
       palette.setRgba(i, n.r, n.g, n.b, 255);
+
+      rgbPaletteColors.add(_RGB(r: n.r, g: n.g, b: n.b));
     }
     //g787 最后一个颜色，始终全部透明！
     // ignore: cascade_invocations
     palette.setAlpha(l, 0); //设置最后一个颜色为透明
     transIndex = l; //透明颜色的index
+    // print("-------transIndex=$transIndex");
   }
 
   @override
@@ -76,7 +90,31 @@ class OctreeQuantizer extends Quantizer {
       }
       root = root.children[i];
     }
+    if (root == null) {
+      // print("----->nil node=$r $g $b");
+    } else if (root.paletteIndex == 0) {
+      // print("----->0 index=$r $g $b");
+      //为什么有些位置，会错误地归到0（有些是本来就是0的）
+      //暴力办法纠正
+      return _indexSearch(r, g, b);
+    }
     return root?.paletteIndex ?? 0;
+  }
+
+  int _abs(int a) => a < 0 ? -a : a;
+
+  int _indexSearch(int r, int g, int b) {
+    int d = 999999;
+    int retI = 0;
+    for (var i = 0; i < rgbPaletteColors.length; i++) {
+      final cc = rgbPaletteColors[i];
+      final nd = _abs(cc.r - r) + _abs(cc.g - g) + _abs(cc.b - b);
+      if (nd < d) {
+        d = nd;
+        retI = i;
+      }
+    }
+    return retI;
   }
 
   void _getNodes(List<_OctreeNode> nodes, _OctreeNode node) {
