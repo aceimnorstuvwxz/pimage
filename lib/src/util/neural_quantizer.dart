@@ -99,7 +99,7 @@ class NeuralQuantizer extends Quantizer {
     initBiasRadius = initRadius * radiusBias;
     _palette = PaletteUint32(256, 4);
     // palette = PaletteUint8(256, 3);
-    palette = PaletteUint8(256, 4); //G787 原来最后结果是3通道，改成4通道，增加alpha通道
+    palette = PaletteUint8(256, 4); //g787 原来最后结果是3通道，改成4通道，增加alpha通道
     specials = 3; // number of reserved colours used
     bgColor = specials - 1;
     _radiusPower = Int32List(netSize >> 3);
@@ -138,7 +138,7 @@ class NeuralQuantizer extends Quantizer {
       palette.setRgb(i, _palette.get(i, 2).abs(), _palette.get(i, 1).abs(),
           _palette.get(i, 0).abs());
 
-      //G787 最后一个颜色，始终全部透明！
+      //g787 最后一个颜色，始终全部透明！
       // ignore: cascade_invocations
       palette.setAlpha(i, i == 255 ? 0 : 255);
     }

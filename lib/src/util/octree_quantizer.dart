@@ -10,6 +10,7 @@ class OctreeQuantizer extends Quantizer {
   @override
   late PaletteUint8 palette;
   final _OctreeNode _root;
+  late int transIndex;
 
   OctreeQuantizer(Image image, {int numberOfColors = 256})
       : _root = _OctreeNode(0, 0, null) {
@@ -38,17 +39,30 @@ class OctreeQuantizer extends Quantizer {
     final nodes = <_OctreeNode>[];
     _getNodes(nodes, _root);
 
-    palette = PaletteUint8(nodes.length, 3);
+    // palette = PaletteUint8(nodes.length, 3);
+    palette =
+        PaletteUint8(nodes.length + 1, 4); //g787 原来最后结果是3通道，改成4通道，增加alpha通道
+    //+1是为了给最后一个透明颜色留位置
     final l = nodes.length;
     for (var i = 0; i < l; ++i) {
       final n = nodes[i]..paletteIndex = i;
-      palette.setRgb(i, n.r, n.g, n.b);
+      palette.setRgba(i, n.r, n.g, n.b, 255);
     }
+    //g787 最后一个颜色，始终全部透明！
+    // ignore: cascade_invocations
+    palette.setAlpha(l, 0); //设置最后一个颜色为透明
+    transIndex = l; //透明颜色的index
   }
 
   @override
-  int getColorIndex(Color c) =>
-      getColorIndexRgb(c.r.toInt(), c.g.toInt(), c.b.toInt());
+  int getColorIndex(Color c) {
+    //g787问题
+    if (c.a < 30) {
+      // print("----transIndex=$transIndex");
+      return transIndex;
+    }
+    return getColorIndexRgb(c.r.toInt(), c.g.toInt(), c.b.toInt());
+  }
 
   @override
   int getColorIndexRgb(int r, int g, int b) {

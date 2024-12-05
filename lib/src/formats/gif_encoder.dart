@@ -34,9 +34,13 @@ class GifEncoder extends Encoder {
   /// Optional frame [duration] is in 1/100 sec.
   void addFrame(Image image, {int? duration}) {
     if (output == null) {
+      //第一针会走这里，给出output对象
+      //后面的帧会走下面的
       output = OutputBuffer();
+      // print("---------output");
 
       if (!image.hasPalette) {
+        // print("---------000");
         if (quantizerType == QuantizerType.neural) {
           _lastColorMap = NeuralQuantizer(image,
               numberOfColors: numColors, samplingFactor: samplingFactor);
@@ -77,10 +81,14 @@ class GifEncoder extends Encoder {
       //生成的palette没有透明颜色，我们通过魔改来加入透明色
       if (quantizerType == QuantizerType.neural) {
         //总是会走这个neural方法
+        //这个很费时间
         _lastColorMap = NeuralQuantizer(image,
             numberOfColors: numColors, samplingFactor: samplingFactor);
+        // print("----------0");
       } else if (quantizerType == QuantizerType.octree) {
+        //oct的速度快很多
         _lastColorMap = OctreeQuantizer(image, numberOfColors: numColors);
+        // print("----------1");
       } else {
         _lastColorMap = BinaryQuantizer();
       }
@@ -132,13 +140,16 @@ class GifEncoder extends Encoder {
   @override
   Uint8List encode(Image image, {bool singleFrame = false}) {
     if (!image.hasAnimation || singleFrame) {
+      // print("---------single frame");
       addFrame(image);
       return finish()!;
     }
 
     repeat = image.loopCount;
     for (var f in image.frames) {
+      //走这里的
       // Convert ms to 1/100 sec.
+      // print("---------multi add frame");
       addFrame(f, duration: f.frameDuration ~/ 10);
     }
     return finish()!;

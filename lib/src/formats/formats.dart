@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import '../../image.dart';
 import '../exif/exif_data.dart';
 import '../filter/dither_image.dart';
 import '../image/image.dart';
@@ -452,6 +453,10 @@ Uint8List encodeGif(Image image,
         DitherKernel dither = DitherKernel.floydSteinberg,
         bool ditherSerpentine = false}) =>
     GifEncoder(
+            //g787b 帧间闪烁问题
+            //改成oct，速度快，而且不闪
+            //同时otc的里面也要做g787原来无法透明问题的魔改
+            quantizerType: QuantizerType.octree,
             samplingFactor: samplingFactor,
             dither: dither,
             ditherSerpentine: ditherSerpentine)
