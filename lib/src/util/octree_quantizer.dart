@@ -19,7 +19,7 @@ class OctreeQuantizer extends Quantizer {
   late PaletteUint8 palette;
   final _OctreeNode _root;
   late int transIndex;
-  final List<_RGB> rgbPaletteColors = [];
+  final List<_RGB> _rgbPaletteColors = [];
 
   OctreeQuantizer(Image image, {int numberOfColors = 256})
       : _root = _OctreeNode(0, 0, null) {
@@ -59,7 +59,7 @@ class OctreeQuantizer extends Quantizer {
       final n = nodes[i]..paletteIndex = i;
       palette.setRgba(i, n.r, n.g, n.b, 255);
 
-      rgbPaletteColors.add(_RGB(r: n.r, g: n.g, b: n.b));
+      _rgbPaletteColors.add(_RGB(r: n.r, g: n.g, b: n.b));
     }
     //g787 最后一个颜色，始终全部透明！
     // ignore: cascade_invocations
@@ -106,8 +106,8 @@ class OctreeQuantizer extends Quantizer {
   int _indexSearch(int r, int g, int b) {
     int d = 999999;
     int retI = 0;
-    for (var i = 0; i < rgbPaletteColors.length; i++) {
-      final cc = rgbPaletteColors[i];
+    for (var i = 0; i < _rgbPaletteColors.length; i++) {
+      final cc = _rgbPaletteColors[i];
       final nd = _abs(cc.r - r) + _abs(cc.g - g) + _abs(cc.b - b);
       if (nd < d) {
         d = nd;

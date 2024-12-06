@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_import
+
 import 'dart:typed_data';
 
 import '../../image.dart';
